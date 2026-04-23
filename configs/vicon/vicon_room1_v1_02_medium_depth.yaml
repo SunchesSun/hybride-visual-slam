@@ -1,0 +1,47 @@
+source:
+  kind: timestamp_manifest
+  manifest_path: /home/sunches/datasets/vicon_room1/V1_02_medium/V1_02_medium/mav0/rgb.txt
+  dataset_root: /home/sunches/datasets/vicon_room1/V1_02_medium/V1_02_medium/mav0
+  replay_realtime: false
+
+orbslam:
+  vocab_path: /home/sunches/vkr/ORB_SLAM3/Vocabulary/ORBvoc.txt
+  settings_path: /home/sunches/vkr/ORB_SLAM3/Examples_old/Monocular/EuRoC.yaml
+  use_viewer: false
+
+processing:
+  pipeline: ade_mono_depth
+  optimization:
+    depth_input_size: 256
+    depth_inference_stride: 3
+  image_enhancement:
+    enabled: false
+  depth_model:
+    backend: zoedepth
+    model_variant: K
+    weights_path: auto
+    device: cuda
+    pad_input: false
+  depth_guidance:
+    depth_threshold_m: 25.0
+    far_point_drop_probability: 0.40
+    recursive_keep_ratio: 0.82
+    max_recursion_depth: 3
+    min_block_points: 12
+    min_feature_retention_ratio: 0.65
+    min_feature_retention_count: 300
+    max_invalid_depth_ratio: 0.45
+    activation_min_ok_frames: 15
+    recovery_cooldown_frames: 35
+    guidance_on_recovery: true
+    adaptive_depth_threshold: true
+    adaptive_depth_percentile: 75.0
+    min_depth_score_for_guidance: 0.18
+
+runtime:
+  live_view: false
+  log_mode: fps_adaptive
+  output_dir: ../../runs/vicon_room1_v1_02_medium_depth/{timestamp}
+  ground_truth_path: /home/sunches/datasets/vicon_room1/V1_02_medium/V1_02_medium/mav0/true/GNSSPoses_tum.txt
+  # inter_frame_delay_s: 0.1
+  # max_frames: 3000

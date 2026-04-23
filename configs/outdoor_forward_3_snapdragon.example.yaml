@@ -1,0 +1,17 @@
+source:
+  kind: timestamp_manifest
+  manifest_path: /home/sunches/datasets/outdoor_forward_3_snapdragon_with_gt/rgb.txt
+  dataset_root: /home/sunches/datasets/outdoor_forward_3_snapdragon_with_gt
+  replay_realtime: false
+
+orbslam:
+  vocab_path: /home/sunches/vkr/ORB_SLAM3/Vocabulary/ORBvoc.txt
+  settings_path: uzh_fpv_snapdragon_fisheye.yaml
+use_viewer: false
+
+runtime:
+  live_view: true
+  log_mode: fps_adaptive
+  output_dir: ../runs/outdoor_forward_3_snapdragon/{timestamp}
+  ground_truth_path: /home/sunches/datasets/outdoor_forward_3_snapdragon_with_gt/true/GNSSPoses_tum.txt
+  # max_frames: 1000

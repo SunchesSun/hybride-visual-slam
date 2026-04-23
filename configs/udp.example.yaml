@@ -1,0 +1,13 @@
+source:
+  kind: udp
+  uri: "udp://127.0.0.1:5000"
+  reconnect: true
+  reconnect_delay_s: 1.0
+
+orbslam:
+  vocab_path: "/absolute/path/to/ORBvoc.txt"
+  settings_path: "/absolute/path/to/Monocular.yaml"
+use_viewer: false
+
+runtime:
+  max_frames: 300

@@ -1,0 +1,53 @@
+source:
+  kind: timestamp_manifest
+  manifest_path: /home/sunches/datasets/old_town_4_train/rgb.txt
+  dataset_root: /home/sunches/datasets/old_town_4_train
+  replay_realtime: false
+
+orbslam:
+  vocab_path: /home/sunches/vkr/ORB_SLAM3/Vocabulary/ORBvoc.txt
+  settings_path: /home/sunches/datasets/old_town_4_train/office_loop.yaml
+  use_viewer: false
+
+processing:
+  pipeline: ade_mono_depth
+  optimization:
+    depth_input_size: 256
+    depth_inference_stride: 4
+  image_enhancement:
+    enabled: true
+    clahe_clip_limit: 4.5
+    clahe_tile_grid_size: 8
+    gamma: 0.75
+    denoise_strength: 0.0
+    sharpen_amount: 0.15
+  depth_model:
+    backend: zoedepth
+    model_variant: K
+    weights_path: auto
+    device: cuda
+    pad_input: false
+  depth_guidance:
+    depth_threshold_m: 25.0
+    far_point_drop_probability: 0.40
+    recursive_keep_ratio: 0.78
+    max_recursion_depth: 3
+    min_block_points: 10
+    min_feature_retention_ratio: 0.15
+    min_feature_retention_count: 250
+    max_invalid_depth_ratio: 0.50
+    activation_min_ok_frames: 6
+    recovery_cooldown_frames: 25
+    guidance_on_init: true
+    guidance_on_recovery: true
+    adaptive_depth_threshold: true
+    adaptive_depth_percentile: 80.0
+    min_depth_score_for_guidance: 0.08
+
+runtime:
+  live_view: false
+  log_mode: fps_adaptive
+  output_dir: ../runs/old_town_4_train_depth/{timestamp}
+  ground_truth_path: /home/sunches/datasets/old_town_4_train/true/GNSSPoses_tum.txt
+  # inter_frame_delay_s: 0.1
+  # max_frames: 3000

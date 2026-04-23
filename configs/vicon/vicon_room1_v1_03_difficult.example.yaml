@@ -1,0 +1,17 @@
+source:
+  kind: timestamp_manifest
+  manifest_path: /home/sunches/datasets/vicon_room1/V1_03_difficult/V1_03_difficult/mav0/rgb.txt
+  dataset_root: /home/sunches/datasets/vicon_room1/V1_03_difficult/V1_03_difficult/mav0
+  replay_realtime: false
+
+orbslam:
+  vocab_path: /home/sunches/vkr/ORB_SLAM3/Vocabulary/ORBvoc.txt
+  settings_path: /home/sunches/vkr/ORB_SLAM3/Examples_old/Monocular/EuRoC.yaml
+use_viewer: false
+
+runtime:
+  live_view: true
+  log_mode: fps_adaptive
+  output_dir: ../../runs/vicon_room1_v1_03_difficult/{timestamp}
+  ground_truth_path: /home/sunches/datasets/vicon_room1/V1_03_difficult/V1_03_difficult/mav0/true/GNSSPoses_tum.txt
+  # max_frames: 1000

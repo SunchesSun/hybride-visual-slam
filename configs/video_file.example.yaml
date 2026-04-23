@@ -1,0 +1,12 @@
+source:
+  kind: video_file
+  path: "/absolute/path/to/input_video.mp4"
+  fps: 30.0
+
+orbslam:
+  vocab_path: "/absolute/path/to/ORBvoc.txt"
+  settings_path: "/absolute/path/to/Monocular.yaml"
+use_viewer: false
+
+runtime:
+  max_frames: 300

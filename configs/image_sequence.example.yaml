@@ -1,0 +1,12 @@
+source:
+  kind: image_sequence
+  glob: "/absolute/path/to/dataset/*.png"
+  fps: 20.0
+
+orbslam:
+  vocab_path: "/absolute/path/to/ORBvoc.txt"
+  settings_path: "/absolute/path/to/Monocular.yaml"
+use_viewer: false
+
+runtime:
+  max_frames: 300
