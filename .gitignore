@@ -1,0 +1,39 @@
+# Python caches and tooling
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# C/C++ build artifacts
+orbslam/build/
+orbslam/CMakeFiles/
+orbslam/CMakeCache.txt
+orbslam/cmake_install.cmake
+orbslam/Makefile
+*.o
+*.so
+*.a
+*.out
+
+# Runtime logs
+*.log
+.claude/
+runs/
+tests/
