@@ -242,7 +242,7 @@ $$
 $$
 z_{thr} =
 \begin{cases}
-\operatorname{Percentile}_\alpha\!\left(\{z_{tk} : \delta_{tk}=1\}\right), & \text{если adaptive\_depth\_threshold включён,} \\
+\mathrm{Percentile}_\alpha\!\left(\{z_{tk} : \delta_{tk}=1\}\right), & \text{если adaptive\_depth\_threshold включён,} \\
 z_{thr}^{fix}, & \text{иначе,}
 \end{cases}
 $$
@@ -271,14 +271,14 @@ $$
 k \text{ удаляется из } \mathcal{E}_t, \quad \text{если} \quad z_{tk} > z_{thr} \quad \text{и} \quad \xi_k < p_{drop},
 $$
 
-где $\xi_k \sim \mathcal{U}(0,1)$ — независимая случайная переменная, $p_{drop}$ — вероятность удаления дальнего признака (`far_point_drop_probability`). Результат обозначим $\mathcal{F}_t^*$.
+где $\xi_k \sim \mathcal{U}(0,1)$ — независимая случайная переменная, $p_{drop}$ — вероятность удаления дальнего признака (`far_point_drop_probability`). Результат обозначим $\mathcal{F}_t^{*}$.
 
 #### Защита от чрезмерной фильтрации (fallback)
 
 Если в результате фильтрации оказывается недостаточно признаков:
 
 $$
-|\mathcal{F}_t^*| < \max\!\left(n_{ret},\; \lceil \beta \cdot n_t \rceil\right),
+|\mathcal{F}_t^{*}| < \max\!\left(n_{ret},\; \lceil \beta \cdot n_t \rceil\right),
 $$
 
 где $n_{ret}$ — абсолютный минимум (`min_feature_retention_count`), $\beta$ — относительный порог (`min_feature_retention_ratio`), то guidance отменяется и в трекинг подаётся исходное множество $\mathcal{F}_t$ без изменений.
@@ -288,7 +288,7 @@ $$
 $$
 \widetilde{\mathcal{F}}_t =
 \begin{cases}
-\mathcal{F}_t^*, & \text{если } g_t = 1 \text{ и } |\mathcal{F}_t^*| \ge \max(n_{ret},\, \lceil\beta n_t\rceil), \\
+\mathcal{F}_t^{*}, & \text{если } g_t = 1 \text{ и } |\mathcal{F}_t^{*}| \ge \max(n_{ret},\, \lceil\beta n_t\rceil), \\
 \mathcal{F}_t, & \text{иначе (fallback).}
 \end{cases}
 $$
@@ -319,7 +319,7 @@ $$
 
 Для количественной оценки точности и устойчивости работы системы используются следующие метрики.
 
-**Абсолютная ошибка траектории (ATE).** Поскольку монокулярный SLAM восстанавливает траекторию с точностью до масштаба, перед вычислением ошибки производится выравнивание по подобию $\mathrm{Sim}(3)$: находится оптимальные масштаб $s^*$, поворот $\mathbf{R}^*$ и трансляция $\mathbf{t}^*$ методом Умеямы, минимизирующие расстояние между эталонной и оцениваемой траекториями.
+**Абсолютная ошибка траектории (ATE).** Поскольку монокулярный SLAM восстанавливает траекторию с точностью до масштаба, перед вычислением ошибки производится выравнивание по подобию $\mathrm{Sim}(3)$: находится оптимальные масштаб $s^{*}$, поворот $\mathbf{R}^{*}$ и трансляция $\mathbf{t}^{*}$ методом Умеямы, минимизирующие расстояние между эталонной и оцениваемой траекториями.
 
 После выравнивания ATE RMSE вычисляется как:
 
@@ -328,7 +328,7 @@ $$
 \frac{1}{T}
 \sum_{t=1}^{T}
 \left\|
-\mathbf{p}_t^{gt} - \left(s^*\mathbf{R}^*\mathbf{p}_t + \mathbf{t}^*\right)
+\mathbf{p}_t^{gt} - \left(s^{*}\mathbf{R}^{*}\mathbf{p}_t + \mathbf{t}^{*}\right)
 \right\|^2
 },
 $$
@@ -344,14 +344,14 @@ $$
 \frac{1}{T-\Delta}
 \sum_{t=1}^{T-\Delta}
 \left\|
-\operatorname{trans}\!\left(
+\mathrm{trans}\!\left(
 \left(\mathbf{T}_t^{-1}\mathbf{T}_{t+\Delta}\right)^{-1}
 \!\left((\mathbf{T}_t^{gt})^{-1}\mathbf{T}_{t+\Delta}^{gt}\right)
 \right)
 \right\|,
 $$
 
-где $\operatorname{trans}(\cdot)$ — оператор извлечения вектора трансляции, $\Delta$ — шаг сравнения (в данной работе $\Delta = 1$ кадр).
+где $\mathrm{trans}(\cdot)$ — оператор извлечения вектора трансляции, $\Delta$ — шаг сравнения (в данной работе $\Delta = 1$ кадр).
 
 RPE характеризует **локальную точность** и отражает качество оценки движения на коротком горизонте, слабо зависит от ошибки масштаба. Именно RPE является основным показателем эффективности depth-guided фильтрации признаков, поскольку guidance действует покадрово.
 
