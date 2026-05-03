@@ -1,4 +1,4 @@
-from .ade_mono_depth_runner import AdeMonoDepthRunner
+from .depth_slam import DepthSlam
 from .depth_estimation import DepthEstimator, DepthPrediction, ZoeDepthEstimator, build_depth_estimator
 from .depth_guidance import DepthGuidanceStats, compute_depth_guided_keep_indices
 from .image_enhancement import EnhancedFrame, LowLightEnhancer
@@ -6,8 +6,8 @@ from .orbslam_runner import AtlasMapGroup, OrbSlamVideoRunner, RunSummary
 from .trajectory_evaluation import TrajectoryMetrics, compute_trajectory_metrics
 
 __all__ = [
-    "AdeMonoDepthRunner",
     "AtlasMapGroup",
+    "DepthSlam",
     "DepthEstimator",
     "DepthGuidanceStats",
     "DepthPrediction",

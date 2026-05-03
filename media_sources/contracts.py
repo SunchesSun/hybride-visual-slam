@@ -26,8 +26,12 @@ class FramePacket:
 
     @property
     def frame_mono(self) -> np.ndarray:
+        if self.frame.ndim != 2:
+            raise ValueError("frame_mono is only valid for grayscale packets (frame.ndim==2)")
         return self.frame
 
     @property
     def frame_rgb(self) -> np.ndarray:
+        if self.frame.ndim != 3 or self.frame.shape[2] != 3:
+            raise ValueError("frame_rgb is only valid for RGB packets (frame.ndim==3, 3 channels)")
         return self.frame

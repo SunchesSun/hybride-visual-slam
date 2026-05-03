@@ -48,7 +48,7 @@ class FeatureFilterLogEntry:
     effective_depth_threshold_m: float = 0.0
 
 
-class AdeMonoDepthRunner:
+class DepthSlam:
     def __init__(
         self,
         config: OrbSlamConfig,
@@ -58,9 +58,9 @@ class AdeMonoDepthRunner:
         logger: logging.Logger | None = None,
     ) -> None:
         if processing.pipeline != "ade_mono_depth":
-            raise ValueError("AdeMonoDepthRunner requires processing.pipeline=ade_mono_depth")
+            raise ValueError("DepthSlam requires processing.pipeline=ade_mono_depth")
         if processing.depth_model is None:
-            raise ValueError("AdeMonoDepthRunner requires processing.depth_model")
+            raise ValueError("DepthSlam requires processing.depth_model")
         self._config = config
         self._processing = processing
         self._depth_estimator = depth_estimator
@@ -112,10 +112,6 @@ class AdeMonoDepthRunner:
             summary = self._persist_run_outputs(output_path, runtime_dirs, summary)
 
         self.shutdown()
-        summary.elapsed_s = self._compute_elapsed_s()
-        summary.average_input_fps = (
-            self._processed_frames / summary.elapsed_s if summary.elapsed_s > 0 else 0.0
-        )
         return summary
 
     def process_packet(
@@ -259,7 +255,7 @@ class AdeMonoDepthRunner:
             tracking_state_counts=tracking_metrics["tracking_state_counts"],
             initialization_succeeded=tracking_metrics["initialization_succeeded"],
             camera_pose_count=len(self._trajectory_records),
-            depth_inference_frame_count=len(self._depth_frame_stats),
+            depth_inference_frame_count=sum(1 for row in self._depth_frame_stats if row["inference_ms"] > 0.0),
             depth_guidance_frame_count=sum(1 for row in self._feature_filter_rows if row.guidance_active),
             depth_filter_applied_frame_count=sum(
                 1 for row in self._feature_filter_rows if row.filter_applied
@@ -529,7 +525,7 @@ class AdeMonoDepthRunner:
         min_score = cfg.min_depth_score_for_guidance
         if min_score > 0.0 and depth_score < min_score:
             return False
-        if self._last_tracking_state == 1:  # NOT_INITIALIZED
+        if self._last_tracking_state in {0, 1}:  # NO_IMAGES_YET / NOT_INITIALIZED
             return cfg.guidance_on_init
         if self._last_tracking_state == 3:  # RECENTLY_LOST
             return cfg.guidance_on_recovery

@@ -26,6 +26,12 @@ def compute_depth_guided_keep_indices(
     config: DepthGuidanceConfig,
     frame_seed: int,
 ) -> tuple[np.ndarray, DepthGuidanceStats]:
+    """Reference Python implementation of depth-guided feature selection.
+
+    The runtime path uses the C++ implementation inside `pyorbslam3_custom`
+    via `system.process_mono_depth_guided`. This function exists for unit
+    tests and as a behavioural reference; it is not called by the runners.
+    """
     if keypoints_xy.ndim != 2 or keypoints_xy.shape[1] != 2:
         raise ValueError("keypoints_xy must have shape Nx2")
     if depth_m.ndim != 2:

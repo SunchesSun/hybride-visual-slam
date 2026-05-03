@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Sequence
 
-from image_processing import AdeMonoDepthRunner, OrbSlamVideoRunner, RunSummary, build_depth_estimator
+from image_processing import DepthSlam, OrbSlamVideoRunner, RunSummary, build_depth_estimator
 from image_processing.trajectory_evaluation import TrajectoryMetrics, compute_trajectory_metrics
 from media_sources import TimestampManifestSourceConfig, load_app_config, open_source
 from visualization import VisualizationModule
@@ -43,7 +43,6 @@ def _resolve_output_dir(config) -> Path:
 
 
 def _build_runner(config, runner_log_mode: str):
-    logger = logging.getLogger("orbslam_runner")
     if config.processing.pipeline == "ade_mono_depth":
         depth_estimator = build_depth_estimator(
             config.processing.depth_model,
@@ -52,18 +51,18 @@ def _build_runner(config, runner_log_mode: str):
         prepare = getattr(depth_estimator, "prepare", None)
         if callable(prepare):
             prepare()
-        return AdeMonoDepthRunner(
+        return DepthSlam(
             config.orbslam,
             config.processing,
             depth_estimator=depth_estimator,
             log_mode=runner_log_mode,
-            logger=logger,
+            logger=logging.getLogger("depth_slam"),
         )
     return OrbSlamVideoRunner(
         config.orbslam,
         image_enhancement_config=config.processing.image_enhancement,
         log_mode=runner_log_mode,
-        logger=logger,
+        logger=logging.getLogger("orbslam_runner"),
     )
 
 
